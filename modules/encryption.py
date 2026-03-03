@@ -17,6 +17,10 @@ def derive_key_parts(user_key: str):
 
 
 
+def scale_chaos(D, L):
+    D = np.asarray(D[:L], dtype=np.float64)
+    D = np.mod(np.floor(D * 1e14), 256)
+    return D.astype(np.uint8)
 
 def generate_chaos_sequences(user_key, length):
     chaos = cicsml.generate_chaos_with_key(user_key, length=8 * length)
@@ -42,18 +46,21 @@ def synchronized_disorder_diffusion(I1, I2, I3,
     IC1 = np.asarray(IC1, dtype=np.int64)
     IC2 = np.asarray(IC2, dtype=np.int64)
 
-    D1 = D1[:L].astype(np.uint8)
-    D2 = D2[:L].astype(np.uint8)
-    D3 = D3[:L].astype(np.uint8)
-    D4 = D4[:L].astype(np.uint8)
-    D5 = D5[:L].astype(np.uint8)
-    D6 = D6[:L].astype(np.uint8)
-    D7 = D7[:L].astype(np.uint8)
-    D8 = D8[:L].astype(np.uint8)
-
+    D1 = scale_chaos(D1, L)
+    D2 = scale_chaos(D2, L)
+    D3 = scale_chaos(D3, L)
+    D4 = scale_chaos(D4, L)
+    D5 = scale_chaos(D5, L)
+    D6 = scale_chaos(D6, L)
+    D7 = scale_chaos(D7, L)
+    D8 = scale_chaos(D8, L)
+    
     d7_const = D7[L - 1]  
     d8_const = D8[L - 1]  
 
+    print("D1 unique:", np.unique(D1))
+    print("D2 unique:", np.unique(D2))
+    print("D7 unique:", np.unique(D7))
     TR = np.zeros(L, dtype=np.uint8)
     TG = np.zeros(L, dtype=np.uint8)
     TB = np.zeros(L, dtype=np.uint8)
