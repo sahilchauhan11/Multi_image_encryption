@@ -92,7 +92,7 @@ def run_full_analysis(
 
     # 3) KEY SENSITIVITY (NPCR / UACI between two ciphers)
     print("\n--- Key Sensitivity Test ---")
-    user_key_modified = "Bskdkaka"
+    user_key_modified = user_key+"1"
 
     cipher_mod = encryption.encrypt_three_images(
         I1_index, I2_index, I3_index, user_key_modified
